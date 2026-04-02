@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kurs: Styringsgruppens rolle i byggeprosjekter</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F7F5F0;
+  --card: #FFFFFF;
+  --primary: #1B3A5C;
+  --primary-light: #2A5A8C;
+  --accent: #C8553D;
+  --accent-light: #E8745E;
+  --text: #2C2C2C;
+  --text-light: #6B6B6B;
+  --border: #E8E4DC;
+  --success: #3A7D44;
+  --success-bg: #E8F5E9;
+  --error: #C8553D;
+  --error-bg: #FDE8E4;
+  --quiz-bg: #F0EDE6;
+  --shadow: 0 2px 16px rgba(27,58,92,0.08);
+  --shadow-hover: 0 4px 24px rgba(27,58,92,0.14);
+  --radius: 12px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app { max-width: 900px; margin: 0 auto; padding: 20px; min-height: 100vh; }
+
+/* Header */
+.header {
+  text-align: center;
+  padding: 48px 24px 36px;
+  position: relative;
+}
+.header-badge {
+  display: inline-block;
+  background: var(--primary);
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 100px;
+  margin-bottom: 20px;
+}
+.header h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(28px, 5vw, 42px);
+  color: var(--primary);
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+.header p {
+  color: var(--text-light);
+  font-size: 16px;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+/* Progress bar */
+.progress-container {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px 24px;
+  margin-bottom: 32px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+.progress-bar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  border-radius: 100px;
+  transition: width 0.6s ease;
+  width: 0%;
+}
+
+/* Module navigation */
+.module-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.module-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  cursor: pointer;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.module-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+  border-color: var(--primary);
+}
+.module-card.active {
+  border-color: var(--primary);
+  background: linear-gradient(135deg, #f0f4f8, #ffffff);
+}
+.module-card.completed {
+  border-color: var(--success);
+}
+.module-card.completed::after {
+  content: '✓';
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: var(--success);
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+.module-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--primary);
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+.module-card h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 18px;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+.module-card p {
+  font-size: 13px;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+
+/* Content area */
+.content-area {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  animation: fadeIn 0.4s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.content-header {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  padding: 32px;
+}
+.content-header h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+.content-header p {
+  opacity: 0.85;
+  font-size: 15px;
+}
+.content-body {
+  padding: 32px;
+}
+.content-body h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  color: var(--primary);
+  margin: 28px 0 14px;
+}
+.content-body h3:first-child { margin-top: 0; }
+.content-body p { margin-bottom: 16px; font-size: 15px; }
+
+/* Info boxes */
+.info-box {
+  background: #F0F4F8;
+  border-left: 4px solid var(--primary);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 20px 24px;
+  margin: 20px 0;
+}
+.info-box.warning {
+  background: #FFF8E1;
+  border-left-color: #F9A825;
+}
+.info-box h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.info-box p { margin-bottom: 0; font-size: 14px; color: var(--text); }
+
+/* Key points */
+.key-point {
+  display: flex;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.key-point:last-child { border-bottom: none; }
+.key-point-icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+}
+.key-point-text { font-size: 14px; }
+.key-point-text strong { color: var(--primary); }
+
+/* Steps */
+.step-list { margin: 16px 0; }
+.step-item {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px dashed var(--border);
+  align-items: flex-start;
+}
+.step-item:last-child { border-bottom: none; }
+.step-num {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+.step-text { font-size: 14px; }
+.step-text strong { display: block; color: var(--primary); margin-bottom: 2px; }
+
+/* Quiz */
+.quiz-section {
+  background: var(--quiz-bg);
+  border-radius: var(--radius);
+  padding: 28px;
+  margin: 28px 0;
+  border: 1px solid var(--border);
+}
+.quiz-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 100px;
+  margin-bottom: 14px;
+}
+.quiz-question {
+  font-family: 'DM Serif Display', serif;
+  font-size: 18px;
+  color: var(--primary);
+  margin-bottom: 18px;
+  line-height: 1.4;
+}
+.quiz-options { display: flex; flex-direction: column; gap: 10px; }
+.quiz-option {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  cursor: pointer;
+  transition: all var(--transition);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.quiz-option:hover:not(.disabled) {
+  border-color: var(--primary);
+  background: #f0f4f8;
+}
+.quiz-option .option-letter {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--text-light);
+  transition: all var(--transition);
+}
+.quiz-option:hover:not(.disabled) .option-letter {
+  background: var(--primary);
+  color: white;
+}
+.quiz-option.correct {
+  border-color: var(--success);
+  background: var(--success-bg);
+}
+.quiz-option.correct .option-letter {
+  background: var(--success);
+  color: white;
+}
+.quiz-option.wrong {
+  border-color: var(--error);
+  background: var(--error-bg);
+}
+.quiz-option.wrong .option-letter {
+  background: var(--error);
+  color: white;
+}
+.quiz-option.disabled { cursor: default; opacity: 0.7; }
+.quiz-feedback {
+  margin-top: 14px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease;
+}
+.quiz-feedback.correct {
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid var(--success);
+}
+.quiz-feedback.wrong {
+  background: var(--error-bg);
+  color: var(--error);
+  border: 1px solid var(--error);
+}
+
+/* Table */
+.risk-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 13px;
+}
+.risk-table th {
+  background: var(--primary);
+  color: white;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+}
+.risk-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.risk-table tr:nth-child(even) td { background: #FAFAF7; }
+.color-dot {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.color-dot.red { background: #E53935; }
+.color-dot.yellow { background: #FDD835; }
+.color-dot.green { background: #43A047; }
+
+/* Navigation buttons */
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  padding: 24px 32px;
+  border-top: 1px solid var(--border);
+}
+.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+}
+.nav-btn.secondary {
+  background: var(--border);
+  color: var(--text);
+}
+.nav-btn.secondary:hover { background: #d8d4cc; }
+.nav-btn.primary {
+  background: var(--primary);
+  color: white;
+}
+.nav-btn.primary:hover { background: var(--primary-light); }
+.nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Back to overview */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 0;
+  margin-bottom: 16px;
+  font-family: 'DM Sans', sans-serif;
+  transition: color var(--transition);
+}
+.back-btn:hover { color: var(--accent); }
+
+/* Score */
+.score-summary {
+  text-align: center;
+  padding: 40px 24px;
+}
+.score-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  box-shadow: 0 8px 32px rgba(27,58,92,0.2);
+}
+.score-circle .score-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 36px;
+  line-height: 1;
+}
+.score-circle .score-label { font-size: 12px; opacity: 0.8; margin-top: 4px; }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .app { padding: 12px; }
+  .content-body { padding: 20px; }
+  .content-header { padding: 24px 20px; }
+  .nav-buttons { padding: 16px 20px; }
+  .module-nav { grid-template-columns: 1fr; }
+  .quiz-section { padding: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+
+<script>
+const modules = [
+  {
+    id: 1,
+    title: "Prosessmodellen",
+    subtitle: "Steg- og trinnvis gjennomføring av forprosjekt",
+    desc: "Forstå den overordnede strukturen med 3 steg og 7 trinn",
+    sections: [
+      {
+        type: "content",
+        html: `
+          <h3>Hvorfor en ny prosessmodell?</h3>
+          <p>Helse Sør-Øst RHF har utviklet en prosessmodell for steg- og trinnvis gjennomføring av forprosjekt, som skal sikre mer standardisert prosjektgjennomføring, redusert risiko og lavere investeringskostnader.</p>
+          <div class="info-box">
+            <h4>Sentrale prinsipper</h4>
+            <p>Modellen bygger på fire grunnpilarer: standardisering, gjenbruk av prosjektert materiale, industrialisering og digitalisering.</p>
+          </div>
+          <h3>Frontloading: Tidlig modenhet</h3>
+          <p>Et nøkkelkonsept i prosessmodellen er «frontloading» - å forskuttere prosjekteringsprosessen sammenlignet med tradisjonelle metoder. Dette innebærer blant annet:</p>
+          <div class="key-point"><div class="key-point-icon">1</div><div class="key-point-text"><strong>Tidlig verifikasjon</strong> av sammenheng mellom funksjon og teknikk opp mot programkrav</div></div>
+          <div class="key-point"><div class="key-point-icon">2</div><div class="key-point-text"><strong>Tidlig avklaring</strong> av grad av gjenbruk og standardisering</div></div>
+          <div class="key-point"><div class="key-point-icon">3</div><div class="key-point-text"><strong>Tidlig verifikasjon</strong> av rom- og utstyrsprogram</div></div>
+          <div class="key-point"><div class="key-point-icon">4</div><div class="key-point-text"><strong>Tidlig beskrivelse</strong> av tekniske funksjonstester, inkludert integrerte tester</div></div>
+          <div class="info-box warning">
+            <h4>Viktig for styringsgruppen</h4>
+            <p>Tidlig løsningsvalg gir økt forutsigbarhet, men begrenser muligheten for nye løsninger og sene teknologibeslutninger. Styringsgruppen bør være bevisst denne avveiningen.</p>
+          </div>
+        `
+      },
+      {
+        type: "quiz",
+        question: "Hva er hovedformålet med «frontloading» i prosessmodellen?",
+        options: [
+          { text: "Å utsette viktige beslutninger til gjennomføringsfasen", correct: false },
+          { text: "Å forskuttere prosjekteringsprosessen for å oppnå tidligere modenhet", correct: true },
+          { text: "Å redusere antall trinn i forprosjektet", correct: false },
+          { text: "Å gi prosjekteringsteamet mer frihet i designvalg", correct: false }
+        ],
+        feedback: {
+          correct: "Riktig! Frontloading handler om å oppnå tidligere modenhet innen utvalgte fag- og funksjonsområder ved å forskuttere prosjekteringsprosessen.",
+          wrong: "Ikke helt. Frontloading betyr å forskuttere prosjekteringsprosessen for å gi tidligere modenhet innen utvalgte fag- og funksjonsområder."
+        }
+      },
+      {
+        type: "content",
+        html: `
+          <h3>De tre stegene</h3>
+          <p>Forprosjektet er delt inn i tre hovedsteg, hver med tydelige leveranser og beslutningspunkter:</p>
+          <div class="step-list">
+            <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Steg 1: Prosjektbasis</strong>Mandatet operasjonaliseres og prosjektet rammes inn gjennom et oppdatert styringsdokument. Rammebetingelsene fryses ved avslutning.</div></div>
+            <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Steg 2: Utvikling av forprosjekt</strong>Forprosjektet utvikles i fire trinn (2.1-2.4) med iterativ metode. Usikkerhet og risiko reduseres gradvis med økt modenhet.</div></div>
+            <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>Steg 3: Validering av forprosjekt</strong>Forprosjektrapporten kvalitetssikres og behandles. Ekstern KSF gjennomføres der avtalt. Resulterer i godkjent forprosjekt og B4-investeringsbeslutning.</div></div>
+          </div>
+        `
+      },
+      {
+        type: "quiz",
+        question: "Hva skjer som resultat av Steg 1 (Prosjektbasis)?",
+        options: [
+          { text: "Forprosjektrapporten ferdigstilles", correct: false },
+          { text: "Prosjektets rammebetingelser fryses for videre gjennomføring", correct: true },
+          { text: "Ekstern kvalitetssikrer leverer sin rapport", correct: false }
+        ],
+        feedback: {
+          correct: "Riktig! Som resultat av Steg 1 fryses prosjektets rammebetingelser for videre gjennomføring.",
+          wrong: "Ikke helt. I Steg 1 er det rammebetingelsene som fryses, gjennom et oppdatert styringsdokument godkjent av eier og prosjekteier."
+        }
+      },
+      {
+        type: "content",
+        html: `
+          <h3>De syv trinnene</h3>
+          <p>Innenfor de tre stegene finnes syv trinn, hvert med spesifikke leveranser og prosjektsikring:</p>
+          <div class="step-list">
+            <div class="step-item"><div class="step-num">1.1</div><div class="step-text"><strong>Avklar eventuelle endringer fra konseptfasen</strong>Vurdere konsekvenser av nye føringer og rammebetingelser for program, løsning og styringsramme.</div></div>
+            <div class="step-item"><div class="step-num">1.2</div><div class="step-text"><strong>Verifiser nasjonale og regionale krav og føringer</strong>Operasjonalisere mandatet gjennom oppdatert styringsdokument. UA, estimat 0 og helhetlig ROS gjennomføres.</div></div>
+            <div class="step-item"><div class="step-num">2.1</div><div class="step-text"><strong>Verifiser grunnkonsept og gjennomførbarhet</strong>Grunnkonseptet i form av fotavtrykk, funksjonalitet og teknikk fryses og besluttes.</div></div>
+            <div class="step-item"><div class="step-num">2.2</div><div class="step-text"><strong>Verifiser utforming av bygg og teknisk funksjonalitet</strong>Omfang, flyt, planløsning og teknisk funksjonalitet fryses og besluttes.</div></div>
+            <div class="step-item"><div class="step-num">2.3</div><div class="step-text"><strong>Verifiser kontroll- og funksjonsområder</strong>Layout på rom-, funksjon og kontrollområde låses og besluttes.</div></div>
+            <div class="step-item"><div class="step-num">2.4</div><div class="step-text"><strong>Verifiser funksjon</strong>Funksjonsprosjekt for å sikre detaljering av utstyr og møblering på romnivå. Designfrys.</div></div>
+            <div class="step-item"><div class="step-num">3.1</div><div class="step-text"><strong>Verifiser leveranser</strong>Kvalitetssikring, behandling og godkjenning av forprosjektrapport med vedlegg. B4-investeringsbeslutning.</div></div>
+          </div>
+          <div class="info-box">
+            <h4>Merk: Trinn 2.4</h4>
+            <p>Veileder for tidligfase plasserer funksjonsprosjektet i gjennomføringsfasen, men regionale føringer krever at det legges inn i forprosjektet for å oppnå større kostnadstrygghet.</p>
+          </div>
+        `
+      },
+      {
+        type: "quiz",
+        question: "Hvor mange trinn inneholder Steg 2 (Utvikling av forprosjekt)?",
+        options: [
+          { text: "2 trinn", correct: false },
+          { text: "3 trinn", correct: false },
+          { text: "4 trinn (2.1 - 2.4)", correct: true },
+          { text: "5 trinn", correct: false }
+        ],
+        feedback: {
+          correct: "Riktig! Steg 2 inneholder fire trinn: 2.1 Verifiser grunnkonsept, 2.2 Verifiser utforming, 2.3 Verifiser kontrollområder, og 2.4 Verifiser funksjon.",
+          wrong: "Steg 2 inneholder fire trinn: 2.1, 2.2, 2.3 og 2.4, som gradvis modner prosjektet fra grunnkonsept til detaljert funksjonsnivå."
+        }
+      }
+    ]
+  },
+  {
+    id: 2,
+    title: "Iterativ prosjektutvikling",
+    subtitle: "Prosessen for å modne prosjektet gradvis",
+    desc: "Forstå den iterative arbeidsmetodikken og kostnadsstyrt utvikling",
+    sections: [
+      {
+        type: "content",
+        html: `
+          <h3>Hva er iterativ prosjektutvikling?</h3>
+          <p>I motsetning til en lineær prosess, der brukerne definerer behovene og prosjekteringsgruppen utarbeider en løsning, anbefaler modellen en iterativ tilnærming. Hvert tema bearbeides gjennom gjentakende runder med prosjektering og kostnadsestimering.</p>
+          <div class="info-box">
+            <h4>Kjerneidé</h4>
+            <p>Arbeidsprosessen er gjentagende innenfor et trinn, for å sikre tilstrekkelig modenhet innenfor kostnadsutviklingen og prosjektets øvrige leveranser før det gås videre til neste trinn.</p>
+          </div>
+          <h3>De syv stegene i en iterasjon</h3>
+          <div class="step-list">
+            <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Definer mål for runden</strong>Velg et avgrenset tema eller del av løsningen (f.eks. et typisk areal, teknisk løsning og logistikk).</div></div>
+            <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Avklare forutsetninger og krav</strong>Ramme inn arbeidet med å utvikle forslag til løsning.</div></div>
+            <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>Utvikle forslag til løsning</strong>Prosjekteringsteamet skisserer en foreløpig løsning basert på behov og rammer.</div></div>
+            <div class="step-item"><div class="step-num">4</div><div class="step-text"><strong>Kostnadsestimering</strong>Rask beregning av kostnader. Grove estimater tidlig, mer detaljerte senere.</div></div>
+            <div class="step-item"><div class="step-num">5</div><div class="step-text"><strong>Vurdering og justering</strong>Sammenlign løsningens verdi med kostnadsnivå. Juster ved behov.</div></div>
+            <div class="step-item"><div class="step-num">6</div><div class="step-text"><strong>Dokumentere beslutninger</strong>Hva ble valgt, hva ble forkastet og hvorfor. Sporbarhet og læring.</div></div>
+            <div class="step-item"><div class="step-num">7</div><div class="step-text"><strong>Gjenta</strong>Iterasjonen avsluttes når temaet er tilstrekkelig avklart. Ny runde for neste tema.</div></div>
+          </div>
+        `
+      },
+      {
+        type: "quiz",
+        question: "I den iterative prosjektutviklingen, hva gjøres etter at et forslag til løsning er utviklet?",
+        options: [
+          { text: "Man går direkte videre til neste tema", correct: false },
+          { text: "Kostnadsestimering gjennomføres for å vurdere om løsningen er innenfor rammene", correct: true },
+          { text: "Man avslutter trinnet og sender til prosjekteier", correct: false }
+        ],
+        feedback: {
+          correct: "Riktig! Etter at et løsningsforslag er utviklet, gjøres kostnadsestimering, etterfulgt av vurdering og justering. Dette sikrer kostnadsstyrt utvikling.",
+          wrong: "Etter løsningsforslaget er neste steg kostnadsestimering, som sikrer at kostnadene vurderes fortløpende gjennom prosjektutviklingen."
+        }
+      },
+      {
+        type: "content",
+        html: `
+          <h3>Hva betyr dette for styringsgruppen?</h3>
+          <p>Den iterative tilnærmingen gir styringsgruppen flere fordeler:</p>
+          <div class="key-point"><div class="key-point-icon">→</div><div class="key-point-text"><strong>Bedre kostnadskontroll:</strong> Hyppige kostnadsestimater gir tidlig varsling om avvik.</div></div>
+          <div class="key-point"><div class="key-point-icon">→</div><div class="key-point-text"><strong>Dokumenterte beslutninger:</strong> Alle valg og forkastelser er sporbare, noe som gir grunnlag for god rådgivning.</div></div>
+          <div class="key-point"><div class="key-point-icon">→</div><div class="key-point-text"><strong>Gradvis modning:</strong> Usikkerhet reduseres systematisk, og prosjektet bygger forutsigbarhet i takt med økt detaljering.</div></div>
+          <div class="info-box warning">
+            <h4>Styringsgruppens fokus</h4>
+            <p>Styringsgruppen bør påse at iterativ metode faktisk benyttes, at beslutninger dokumenteres, og at kostnadsestimering følger hvert løsningsforslag.</p>
+          </div>
+        `
+      },
+      {
+        type: "quiz",
+        question: "Hva er en av hovedfordelene med iterativ prosjektutvikling sammenlignet med lineær tilnærming?",
+        options: [
+          { text: "Det tar kortere tid å ferdigstille prosjektet", correct: false },
+          { text: "Det sikrer dynamisk styring og best mulig balanse mellom funksjonalitet og økonomi", correct: true },
+          { text: "Det eliminerer behovet for medvirkningsprosesser", correct: false }
+        ],
+        feedback: {
+          correct: "Riktig! Den iterative tilnærmingen sikrer dynamisk styring og best mulig balanse mellom funksjonalitet og økonomi gjennom hyppige kostnadsestimater og justeringer.",
+          wrong: "Hovedfordelen er dynamisk styring og bedre balanse mellom funksjonalitet og økonomi, oppnådd gjennom gjentakende runder med prosjektering og kostnadsestimering."
+        }
+      }
+    ]
+  },
+  {
+    id: 3,
+    title: "Eierstyring og beslutninger",
+    subtitle: "Roller, ansvar og beslutningspunkter",
+    desc: "Forstå styringsgruppens rolle i beslutningsplanen",
+    sections: [
+      {
+        type: "content",
+        html: `
+          <h3>Prosjekteierstyring i Helse Sør-Øst</h3>
+          <p>HSØ RHF har delegert prosjekteierskapet til helseforetakene for fire av de fem prosjektene, mens HSØ RHF selv er prosjekteier for nytt Mjøssykehus.</p>
+          <p>Prosjekteier er representert ved administrerende direktør og skal sikre trygg og effektiv gjennomføring, etterlevelse av effektmål og optimal verdiskaping.</p>
+          <div class="info-box">
+            <h4>Styringsgruppens mandat</h4>
+            <p>For hvert forprosjekt opprettes en styringsgruppe som er rådgivende organ for prosjekteier. Styringsgruppen opererer innenfor det mandatet og fullmakten som er gitt til prosjekteier.</p>
+          </div>
+
+          <h3>Beslutningspunkter gjennom forprosjektet</h3>
+          <p>Eier og prosjekteier har ulike roller ved hvert steg:</p>
+          <table class="risk-table">
+            <tr><th>Steg</th><th>Prosjekteier (HF)</th><th>Eier (HSØ RHF)</th></tr>
+            <tr><td><strong>Steg 1</strong></td><td>Godkjenner operasjonalisering av eierkrav og styringsdokument</td><td>Godkjenner operasjonalisering av nasjonale og regionale eierkrav</td></tr>
+            <tr><td><strong>Steg 2</strong></td><td>Orienteres gjennom møtestruktur. Behandler avvik fra prosjektbasis</td><td>Orienteres gjennom møtestruktur. Behandler avvik ihht mandat</td></tr>
+            <tr><td><strong>Steg 3</strong></td><td>Godkjenner forprosjektet (ihht fullmaktstruktur)</td><td>Godkjenner forprosjektet (ihht fullmaktstruktur)</td></tr>
+          </table>
+          <div class="info-box warning">
+            <h4>Eskaleringsplikt</h4>
+            <p>Forhold som påvirker HSØ RHFs «sørge for-ansvar», økonomien, mål, omfang eller nasjonale/regionale krav skal forelegges HSØ RHF gjennom etablerte rapporteringsrutiner.</p>
+          </div>
+        `
+      },
+      {
+        type: "quiz",
+        question: "Hva er styringsgruppens formelle rolle i forprosjektet?",
+        options: [
+          { text: "Besluttende organ med full myndighet", correct: false },
+          { text: "Rådgivende organ for prosjekteier innenfor gitt mandat og fullmakt", correct: true },
+          { text: "Utførende organ med ansvar for prosjektering", correct: false },
+          { text: "Kontrollorgan med vetorett", correct: false }
+        ],
+        feedback: {
+          correct: "Riktig! Styringsgruppen er et rådgivende organ for prosjekteier, og opererer innenfor det mandatet og fullmakten som er gitt.",
+          wrong: "Styringsgruppen er et rådgivende organ for prosjekteier. Den har ikke egen beslutningsmyndighet, men rådgir prosjekteier innenfor gitt mandat."
+        }
+      },
+      {
+        type: "content",
+        html: `
+          <h3>Medvirkning og avslutning</h3>
+          <p>Medvirkningsprosessen følger samme milepæler som prosjektsikring. All medvirkning med betydning for valg av løsninger skal være ferdigstilt innen B4 (investeringsbeslutning).</p>
+          <p>Mottaksorganisasjonen deltar gjennom medvirkningsprosessen. Alle endringer og avvik som påvirker effektmål, driftskonsepter, omfang eller kvalitet, skal behandles i mottaksorganisasjonen i henhold til fullmaktstruktur.</p>
+          <div class="info-box">
+            <h4>Viktige leveranser i Steg 3</h4>
+            <p>Ved avslutning av forprosjektet skal det foreligge: oppdatert helhetlig ROS med akseptabel restrisiko, godkjent regulering og rekkefølgebestemmelser, gevinstrealiseringsplan fra mottaksorganisasjonen, og utkast til mandat for gjennomføringsfasen.</p>
+          </div>
+        `
+      },
+      {
+        type: "quiz",
+        question: "Når skal all medvirkning med betydning for valg av løsninger være ferdigstilt?",
+        options: [
+          { text: "Innen Steg 1 er avsluttet", correct: false },
+          { text: "Innen B4 (investeringsbeslutning)", correct: true },
+          { text: "Først etter gjennomføringsfasen starter", correct: false }
+        ],
+        feedback: {
+          correct: "Riktig! All medvirkning med betydning for valg av løsninger skal være ferdigstilt innen B4, som er investeringsbeslutningen.",
+          wrong: "All medvirkning med betydning for løsningsvalg skal være ferdigstilt innen B4 (investeringsbeslutningen). Dette sikrer at beslutningsgrunnlaget er komplett."
+        }
+      }
+    ]
+  },
+  {
+    id: 4,
+    title: "Risikostyring",
+    subtitle: "Krav, prosess og verktøy for styring av risiko",
+    desc: "Overordnede krav og styringsgruppens rolle i risikostyringen",
+    sections: [
+      {
+        type: "content",
+        html: `
+          <h3>Formålet med risikostyring</h3>
+          <p>Risikostyring skal bedre prosjektleders styringsevne og bidra til tryggere måloppnåelse. Det handler om å se og utnytte risiko før den slår til, og å håndtere situasjoner som oppstår.</p>
+          <p>Risiko defineres som fremtidige hendelser eller situasjoner som kan påvirke målene. Risiko kan være positivt (muligheter), nøytralt eller negativt (trusler).</p>
+          
+          <h3>Fire overordnede krav</h3>
+          <div class="key-point"><div class="key-point-icon">1</div><div class="key-point-text"><strong>Risiko skal være kjent, eid, kommunisert og håndtert</strong></div></div>
+          <div class="key-point"><div class="key-point-icon">2</div><div class="key-point-text"><strong>Risikostyring skal være integrert i prosjektstyringen.</strong> Ved viktige beslutninger skal balansen mellom mål, midler og risiko dokumenteres.</div></div>
+          <div class="key-point"><div class="key-point-icon">3</div><div class="key-point-text"><strong>Ledere på alle nivåer er ansvarlig</strong> for risikostyring innen eget ansvarsområde.</div></div>
+          <div class="key-point"><div class="key-point-icon">4</div><div class="key-point-text"><strong>Sykehusbyggs rutiner og verktøy</strong> for risikostyring skal benyttes i alle byggeprosjekter over 500 MNOK.</div></div>
+        `
+      },
+      {
+        type: "quiz",
+        question: "Hvilket av følgende er IKKE et av de fire overordnede kravene til risikostyring?",
+        options: [
+          { text: "Risiko skal være kjent, eid, kommunisert og håndtert", correct: false },
+          { text: "Risikostyring skal kun gjennomføres av ekstern kvalitetssikrer", correct: true },
+          { text: "Risikostyring skal være integrert i prosjektstyringen", correct: false },
+          { text: "Ledere på alle nivåer er ansvarlig for risikostyring innen eget ansvarsområde", correct: false }
+        ],
+        feedback: {
+          correct: "Riktig! Risikostyring er ledelsens ansvar og skal ikke delegeres utelukkende til eksterne. Prosjektleder har ansvar for å etablere og utøve prosessen.",
+          wrong: "Risikostyring av eksterne er ikke et krav - tvert imot, det er ledere på alle nivåer som er ansvarlige for risikostyring innen eget ansvarsområde."
+        }
+      },
+      {
+        type: "content",
+        html: `
+          <h3>Sentrale roller</h3>
+          <div class="key-point"><div class="key-point-icon">PE</div><div class="key-point-text"><strong>Prosjekteier:</strong> Overordnet ansvar for styring av prosjektrisiko.</div></div>
+          <div class="key-point"><div class="key-point-icon">PL</div><div class="key-point-text"><strong>Prosjektleder:</strong> Etablerer og utøver risikostyringsprosessen slik at risiko er kjent, eid, kommunisert og håndtert.</div></div>
+          <div class="key-point"><div class="key-point-icon">RE</div><div class="key-point-text"><strong>Risikoeier:</strong> Den som har myndighet til å bestemme hvilke risikoer som krever tiltak, og hva tiltakene skal være.</div></div>
+          <div class="key-point"><div class="key-point-icon">SG</div><div class="key-point-text"><strong>Styringsgruppe:</strong> Gir innspill til prioritering av risiko og kriterier for akseptabelt risikonivå. Skal kjenne til og ta eierskap til prosjektets risikobilde.</div></div>
+          
+          <h3>Styringsgruppens spesifikke oppgaver</h3>
+          <p>Styringsgruppen skal kjenne til og ta eierskap til prosjektets risikobilde, gi innspill til prioritering, og ved behov anbefale ekstern kvalitetssikring eller usikkerhetsanalyse utover minimumskravene.</p>
+        `
+      },
+      {
+        type: "quiz",
+        question: "Hvem har det overordnede ansvaret for styring av prosjektrisiko?",
+        options: [
+          { text: "Styringsgruppen", correct: false },
+          { text: "Prosjektleder", correct: false },
+          { text: "Prosjekteier", correct: true },
+          { text: "Leder for risikostyring", correct: false }
+        ],
+        feedback: {
+          correct: "Riktig! Prosjekteier har det overordnede ansvaret for styring av prosjektrisiko. Styringsgruppen er rådgivende.",
+          wrong: "Det er prosjekteier som har det overordnede ansvaret. Prosjektleder utøver prosessen, og styringsgruppen er rådgivende."
+        }
+      },
+      {
+        type: "content",
+        html: `
+          <h3>Risikomatrisen og beslutningskriterier</h3>
+          <p>Sykehusbygg bruker standardiserte skalatrinn for sannsynlighet (1-5) og konsekvens (1-5) innenfor kategoriene: personsikkerhet, ytre miljø, kvalitet, kostnad, fremdrift og omdømme.</p>
+          <table class="risk-table">
+            <tr><th>Farge</th><th>Nivå</th><th>Handling</th></tr>
+            <tr><td><span class="color-dot red"></span>Rød</td><td>Høy risiko</td><td>Skal alltid søkes redusert. Tiltak dokumenteres. Risikoeier rapporterer jevnlig til overordnede.</td></tr>
+            <tr><td><span class="color-dot yellow"></span>Gul</td><td>Middels risiko</td><td>Kritisk vurdering av behov for tiltak. Tiltak gjennomføres når kost/nytte er rimelig.</td></tr>
+            <tr><td><span class="color-dot green"></span>Grønn</td><td>Lav risiko</td><td>Ytterligere tiltak normalt ikke nødvendig. Overvåkes for endring over tid.</td></tr>
+          </table>
+          <div class="info-box warning">
+            <h4>Viktig distinksjon</h4>
+            <p>Disse kalles «beslutningskriterier», ikke «akseptkriterier». Hva som er akseptabel risiko er en ledelsesbeslutning som skal baseres på en helhetlig vurdering.</p>
+          </div>
+          
+          <h3>Helhetlig risikovurdering (ROS)</h3>
+          <p>Ved oppstart av større prosjekter skal HSØ, Sykehusbygg og mottakende HF sammen gjennomføre en helhetlig ROS av planlagt gjennomføring. Denne skal oppdateres og vedlikeholdes i alle faser.</p>
+          
+          <h3>Eksterne usikkerhetsanalyser</h3>
+          <p>HSØ stiller krav om ekstern usikkerhetsanalyse og kvalitetssikring av konseptvalg (KSK) i konseptfasen, og for store/komplekse prosjekter også ekstern usikkerhetsanalyse etter forprosjektfasen, før B4.</p>
+        `
+      },
+      {
+        type: "quiz",
+        question: "Hva betyr det at en risiko er «rød» i risikomatrisen?",
+        options: [
+          { text: "Risikoen kan ignoreres inntil videre", correct: false },
+          { text: "Risikoen krever kun overvåkning over tid", correct: false },
+          { text: "Høy risiko som alltid skal søkes redusert, med dokumenterte tiltak og jevnlig rapportering", correct: true },
+          { text: "Risikoen er eliminert og kan fjernes fra registeret", correct: false }
+        ],
+        feedback: {
+          correct: "Riktig! Røde risikoer skal alltid søkes redusert gjennom dokumenterte tiltak, og risikoeier skal jevnlig kommunisere status til nærmeste overordnede.",
+          wrong: "Rød indikerer høy risiko som alltid skal søkes redusert. Tiltak skal dokumenteres skriftlig, og risikoeier skal jevnlig rapportere status."
+        }
+      }
+    ]
+  },
+  {
+    id: 5,
+    title: "Prosjektsikring",
+    subtitle: "Kvalitetssikring og sjekklister per trinn",
+    desc: "Forstå prosjektsikringspunkter og hva som skal verifiseres",
+    sections: [
+      {
+        type: "content",
+        html: `
+          <h3>Hva er prosjektsikring?</h3>
+          <p>Prosjektsikring er formelle kvalitetssikringspunkter som gjennomføres ved hvert trinn for å sikre avtalt fremdrift. Modellen forutsetter tilstrekkelig modenhet i kostnadsutvikling og leveranser før det gås videre til neste trinn.</p>
+          
+          <h3>Sjekkliste-tema som følges opp ved hvert trinn (2.1-3.1)</h3>
+          <div class="key-point"><div class="key-point-icon">📊</div><div class="key-point-text"><strong>Modenhet på modell og kalkyle:</strong> Samsvar mellom MMI, FMI og KMI.</div></div>
+          <div class="key-point"><div class="key-point-icon">📋</div><div class="key-point-text"><strong>Status kutt- og plussliste:</strong> Periodisert kutt- og plussliste oppdatert.</div></div>
+          <div class="key-point"><div class="key-point-icon">🔄</div><div class="key-point-text"><strong>Gjenbruk av prosjektert materiale:</strong> Andel av standardrom og gjenbruk løsninger og teknikk.</div></div>
+          <div class="key-point"><div class="key-point-icon">🏗️</div><div class="key-point-text"><strong>Systematisk ferdigstillelse:</strong> Status i henhold til plan.</div></div>
+          <div class="key-point"><div class="key-point-icon">🏭</div><div class="key-point-text"><strong>Industrialiseringsstrategi:</strong> Oppnådd resultat og verdi.</div></div>
+          <div class="key-point"><div class="key-point-icon">🤝</div><div class="key-point-text"><strong>Medvirkning:</strong> Realisert milepæl i henhold til plan.</div></div>
+          <div class="key-point"><div class="key-point-icon">⚠️</div><div class="key-point-text"><strong>Risikostyring:</strong> Risiko oppdatert og tiltak akseptable.</div></div>
+          <div class="key-point"><div class="key-point-icon">🌱</div><div class="key-point-text"><strong>LCC og BREEAM:</strong> Status i henhold til metode og gitte måltall.</div></div>
+          
+          <div class="info-box">
+            <h4>For styringsgruppen</h4>
+            <p>Styringsgruppen bør forvente rapportering på disse temaene ved hvert trinn, og påse at avvik fra sjekklisten adresseres før man anbefaler overgang til neste trinn.</p>
+          </div>
+        `
+      },
+      {
+        type: "quiz",
+        question: "Hva er formålet med prosjektsikring ved hvert trinn?",
+        options: [
+          { text: "Å dokumentere alt arbeid for arkivering", correct: false },
+          { text: "Å sikre tilstrekkelig modenhet i kostnad og leveranser før overgang til neste trinn", correct: true },
+          { text: "Å gi prosjekteringsgruppen nye oppgaver", correct: false }
+        ],
+        feedback: {
+          correct: "Riktig! Prosjektsikring sikrer at det foreligger tilstrekkelig modenhet i kostnadsutvikling og leveranser før prosjektet går videre til neste trinn.",
+          wrong: "Prosjektsikringens hovedformål er å sikre at modenhet i kostnad og leveranser er tilstrekkelig til å gå videre til neste trinn."
+        }
+      },
+      {
+        type: "content",
+        html: `
+          <h3>Risikostyring i beslutningspunktene</h3>
+          <p>Veilederen for risikostyring stiller konkrete spørsmål styringsgruppen bør stille ved hvert beslutningspunkt:</p>
+
+          <h3>Ved B3 (Valg av konsept)</h3>
+          <div class="step-list">
+            <div class="step-item"><div class="step-num">?</div><div class="step-text">Er prosjektets risikobilde akseptabelt med tanke på videreføring?</div></div>
+            <div class="step-item"><div class="step-num">?</div><div class="step-text">Foreligger usikkerhetsanalyse og KSK-rapport med akseptable vurderinger?</div></div>
+            <div class="step-item"><div class="step-num">?</div><div class="step-text">Er valg av gjennomføringsmodell vurdert med hensyn til risiko?</div></div>
+            <div class="step-item"><div class="step-num">?</div><div class="step-text">Er krav til KSF og ekstern usikkerhetsanalyse før B4 avklart?</div></div>
+          </div>
+
+          <h3>Ved B4 (Investeringsbeslutning)</h3>
+          <div class="step-list">
+            <div class="step-item"><div class="step-num">?</div><div class="step-text">Er anmerkninger fra KSF-rapport og usikkerhetsanalyse fulgt opp?</div></div>
+            <div class="step-item"><div class="step-num">?</div><div class="step-text">Er risikoene nylig vurdert og beskrevet? Er risikobildet akseptabelt?</div></div>
+            <div class="step-item"><div class="step-num">?</div><div class="step-text">Er økonomiske analyser med kalkyle, UA og kuttliste akseptable?</div></div>
+            <div class="step-item"><div class="step-num">?</div><div class="step-text">Foreligger oppdatert styringsdokument med plan for risikostyring?</div></div>
+          </div>
+        `
+      },
+      {
+        type: "quiz",
+        question: "Hva bør styringsgruppen spørre om ved B4 (investeringsbeslutningen)?",
+        options: [
+          { text: "Om prosjektet kan ferdigstilles uten ytterligere finansiering", correct: false },
+          { text: "Om risikoene er nylig vurdert, risikobildet er akseptabelt, og økonomiske analyser er tilstrekkelig kvalitetssikret", correct: true },
+          { text: "Om alle ansatte har gjennomført HMS-kurs", correct: false }
+        ],
+        feedback: {
+          correct: "Riktig! Ved B4 skal styringsgruppen forsikre seg om at risikoene er nylig vurdert, risikobildet akseptabelt, og at økonomiske analyser med kalkyle og usikkerhetsanalyse er grundig kvalitetssikret.",
+          wrong: "Ved B4 er det kritisk å vurdere om risikobildet er akseptabelt, om KSF-anmerkninger er fulgt opp, og om økonomiske analyser er tilstrekkelig kvalitetssikret."
+        }
+      }
+    ]
+  }
+];
+
+// State
+const STORAGE_KEY = 'kurs-styringsgruppe-state';
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const saved = JSON.parse(raw);
+      return {
+        currentView: saved.currentView || 'overview',
+        currentModule: saved.currentModule ?? null,
+        currentSection: saved.currentSection || 0,
+        quizAnswers: saved.quizAnswers || {},
+        completedModules: new Set(saved.completedModules || [])
+      };
+    }
+  } catch (e) {}
+  return {
+    currentView: 'overview',
+    currentModule: null,
+    currentSection: 0,
+    quizAnswers: {},
+    completedModules: new Set()
+  };
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      currentView: state.currentView,
+      currentModule: state.currentModule,
+      currentSection: state.currentSection,
+      quizAnswers: state.quizAnswers,
+      completedModules: [...state.completedModules]
+    }));
+  } catch (e) {}
+}
+
+let state = loadState();
+
+function getTotalQuizzes() {
+  let total = 0;
+  modules.forEach(m => m.sections.forEach(s => { if (s.type === 'quiz') total++; }));
+  return total;
+}
+
+function getAnsweredQuizzes() {
+  return Object.keys(state.quizAnswers).length;
+}
+
+function getCorrectQuizzes() {
+  return Object.values(state.quizAnswers).filter(v => v).length;
+}
+
+function render() {
+  saveState();
+  const app = document.getElementById('app');
+  if (state.currentView === 'overview') {
+    app.innerHTML = renderOverview();
+  } else if (state.currentView === 'module') {
+    app.innerHTML = renderModule();
+  } else if (state.currentView === 'results') {
+    app.innerHTML = renderResults();
+  }
+  bindEvents();
+}
+
+function renderOverview() {
+  const answered = getAnsweredQuizzes();
+  const total = getTotalQuizzes();
+  const pct = total > 0 ? Math.round((answered / total) * 100) : 0;
+  
+  return `
+    <div class="header">
+      <div class="header-badge">Helse Sør-Øst RHF</div>
+      <h1>Styringsgruppens rolle i byggeprosjekter</h1>
+      <p>Modulbasert kurs om prosessmodellen for forprosjekt og risikostyring i sykehusbyggprosjekter</p>
+    </div>
+    <div class="progress-container">
+      <div class="progress-label">
+        <span>Fremdrift</span>
+        <span>${answered} av ${total} quizspørsmål besvart</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    </div>
+    <div class="module-nav">
+      ${modules.map(m => `
+        <div class="module-card ${state.completedModules.has(m.id) ? 'completed' : ''}" data-module="${m.id}">
+          <div class="module-number">${m.id}</div>
+          <h3>${m.title}</h3>
+          <p>${m.desc}</p>
+        </div>
+      `).join('')}
+      ${getAnsweredQuizzes() > 0 ? `
+        <div class="module-card" data-action="results" style="border-color:var(--accent);background:linear-gradient(135deg,#fef5f3,#fff)">
+          <div class="module-number" style="background:var(--accent)">★</div>
+          <h3>Se resultater</h3>
+          <p>Se dine quiz-resultater og totalpoeng</p>
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+function renderModule() {
+  const mod = modules.find(m => m.id === state.currentModule);
+  const section = mod.sections[state.currentSection];
+  const isLast = state.currentSection === mod.sections.length - 1;
+  const isFirst = state.currentSection === 0;
+  
+  let sectionHtml = '';
+  if (section.type === 'content') {
+    sectionHtml = section.html;
+  } else if (section.type === 'quiz') {
+    const quizKey = `${mod.id}-${state.currentSection}`;
+    const answered = state.quizAnswers.hasOwnProperty(quizKey);
+    sectionHtml = renderQuiz(section, quizKey, answered);
+  }
+  
+  return `
+    <button class="back-btn" data-action="back">← Tilbake til oversikt</button>
+    <div class="content-area">
+      <div class="content-header">
+        <h2>Modul ${mod.id}: ${mod.title}</h2>
+        <p>${mod.subtitle}</p>
+      </div>
+      <div class="content-body">
+        ${sectionHtml}
+      </div>
+      <div class="nav-buttons">
+        <button class="nav-btn secondary" ${isFirst ? 'disabled' : ''} data-action="prev">← Forrige</button>
+        <span style="font-size:13px;color:var(--text-light);align-self:center">${state.currentSection + 1} / ${mod.sections.length}</span>
+        ${isLast ? 
+          `<button class="nav-btn primary" data-action="complete">Fullfør modul →</button>` :
+          `<button class="nav-btn primary" data-action="next">Neste →</button>`
+        }
+      </div>
+    </div>
+  `;
+}
+
+function renderQuiz(section, quizKey, answered) {
+  const letters = ['A', 'B', 'C', 'D'];
+  return `
+    <div class="quiz-section">
+      <div class="quiz-badge">Kunnskapstest</div>
+      <div class="quiz-question">${section.question}</div>
+      <div class="quiz-options">
+        ${section.options.map((opt, i) => {
+          let cls = 'quiz-option';
+          if (answered) {
+            cls += ' disabled';
+            if (opt.correct) cls += ' correct';
+            else if (state.quizAnswers[quizKey + '-selected'] === i && !opt.correct) cls += ' wrong';
+          }
+          return `<div class="${cls}" data-quiz="${quizKey}" data-index="${i}">
+            <span class="option-letter">${letters[i]}</span>
+            <span>${opt.text}</span>
+          </div>`;
+        }).join('')}
+      </div>
+      ${answered ? `
+        <div class="quiz-feedback ${state.quizAnswers[quizKey] ? 'correct' : 'wrong'}">
+          ${state.quizAnswers[quizKey] ? '✓ ' + section.feedback.correct : '✗ ' + section.feedback.wrong}
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+function renderResults() {
+  const total = getTotalQuizzes();
+  const answered = getAnsweredQuizzes();
+  const correct = getCorrectQuizzes();
+  const pct = answered > 0 ? Math.round((correct / answered) * 100) : 0;
+  
+  return `
+    <button class="back-btn" data-action="back">← Tilbake til oversikt</button>
+    <div class="content-area">
+      <div class="content-header">
+        <h2>Dine resultater</h2>
+        <p>Oversikt over quiz-prestasjoner</p>
+      </div>
+      <div class="score-summary">
+        <div class="score-circle">
+          <div class="score-num">${pct}%</div>
+          <div class="score-label">${correct}/${answered} riktig</div>
+        </div>
+        <p style="color:var(--text-light);font-size:15px">${answered < total ? `Du har besvart ${answered} av ${total} spørsmål.` : 'Du har besvart alle spørsmål!'}</p>
+        <p style="margin-top:12px;font-size:15px">${pct >= 80 ? 'Flott innsats! Du har god forståelse av materialet.' : pct >= 50 ? 'Bra jobbet! Vurder å gå tilbake og repetere modulene der du svarte feil.' : 'Det kan lønne seg å gå gjennom modulene en gang til for å styrke forståelsen.'}</p>
+      </div>
+    </div>
+  `;
+}
+
+function bindEvents() {
+  document.querySelectorAll('.module-card[data-module]').forEach(el => {
+    el.addEventListener('click', () => {
+      state.currentModule = parseInt(el.dataset.module);
+      state.currentSection = 0;
+      state.currentView = 'module';
+      render();
+      window.scrollTo(0, 0);
+    });
+  });
+  
+  document.querySelectorAll('[data-action="results"]').forEach(el => {
+    el.addEventListener('click', () => {
+      state.currentView = 'results';
+      render();
+      window.scrollTo(0, 0);
+    });
+  });
+  
+  document.querySelectorAll('[data-action="back"]').forEach(el => {
+    el.addEventListener('click', () => {
+      state.currentView = 'overview';
+      render();
+      window.scrollTo(0, 0);
+    });
+  });
+  
+  document.querySelectorAll('[data-action="prev"]').forEach(el => {
+    el.addEventListener('click', () => {
+      if (state.currentSection > 0) {
+        state.currentSection--;
+        render();
+        window.scrollTo(0, 0);
+      }
+    });
+  });
+  
+  document.querySelectorAll('[data-action="next"]').forEach(el => {
+    el.addEventListener('click', () => {
+      const mod = modules.find(m => m.id === state.currentModule);
+      if (state.currentSection < mod.sections.length - 1) {
+        state.currentSection++;
+        render();
+        window.scrollTo(0, 0);
+      }
+    });
+  });
+  
+  document.querySelectorAll('[data-action="complete"]').forEach(el => {
+    el.addEventListener('click', () => {
+      state.completedModules.add(state.currentModule);
+      state.currentView = 'overview';
+      render();
+      window.scrollTo(0, 0);
+    });
+  });
+  
+  document.querySelectorAll('.quiz-option:not(.disabled)').forEach(el => {
+    el.addEventListener('click', () => {
+      const quizKey = el.dataset.quiz;
+      const index = parseInt(el.dataset.index);
+      const mod = modules.find(m => m.id === state.currentModule);
+      const section = mod.sections[state.currentSection];
+      const isCorrect = section.options[index].correct;
+      
+      state.quizAnswers[quizKey] = isCorrect;
+      state.quizAnswers[quizKey + '-selected'] = index;
+      render();
+    });
+  });
+}
+
+render();
+</script>
+</body>
+</html>
